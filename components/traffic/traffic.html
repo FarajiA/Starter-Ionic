@@ -1,0 +1,16 @@
+﻿<ion-view view-title="Traffic">
+    <ion-content class="padding">
+        <div class="button-bar">
+            <a class="button" ng-class="{'active' : !vm.showChasing }" ng-click="vm.showChasing = false;">Chasers <i class="icon ion-ios7-telephone-outline"><span class="badge badge-stable icon-badge">{{vm.ChasersNo}}</span></i></a>
+            <a class="button" ng-class="{'active' : vm.showChasing }" ng-click="vm.showChasing = true;">Chasing <i class="icon ion-ios7-telephone-outline"><span class="badge badge-stable icon-badge">{{vm.ChasingNo}}</span></i></a>
+        </div>
+        <div id="result">
+            <div id="chasers" ng-show="!vm.showChasing" class="chasers">
+                <h3>Chasers</h3>
+            </div>
+            <div id="chasing" ng-show="vm.showChasing" class="chasing">
+                <h3>Chasing</h3>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,18 @@
+﻿<ion-view view-title="Activity">
+    <ion-content class="padding">
+
+        <div class="button-bar">
+            <a class="button" ng-class="{'active' : !vm.showRequests }" ng-click="vm.showRequests = false">Broadcasting <i class="icon ion-ios7-telephone-outline"><span class="badge badge-stable icon-badge">{{vm.broadcastingNo}}</span></i></a>
+            <a class="button" ng-class="{'active' : vm.showRequests }" ng-click="vm.showRequests = true">Requests <i class="icon ion-ios7-telephone-outline"><span class="badge badge-stable icon-badge">{{vm.requestsNo}}</span></i></a>
+        </div>
+        <div id="result">
+            <div id="activity" ng-show="!vm.showRequests" class="broadcast">
+                <h3>Broadcasters</h3>
+            </div>
+            <div id="requests" ng-show="vm.showRequests" class="requests">
+                <h3>Requests</h3>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>
