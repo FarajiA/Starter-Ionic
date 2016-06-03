@@ -6,6 +6,16 @@ const clientID_CONSTANT = "ngAuthApp";
 const refreshTokenLife_CONSTANT = 7;
 const countSet_CONSTANT = 20;
 
+const newMesssageTitle_CONSTANT = "New Message";
+const newRequestTitle__CONSTANT = "New Request";
+const newChasingTitle__CONSTANT = "Accepted Request";
+const newChaserTitle__CONSTANT = "New Chaser";
+const newBroadcasting_CONSTANT = "Broadcasting"
+const newMesssage_CONSTANT = "{0} sent you a message.";
+const newRequest_CONSTANT = "{0} sent you a request.";
+const newChasing_CONSTANT = "{0} accepted your request.";
+const newChaser_CONSTANT = "{0} started chasing you."
+
 var app = angular.module('App', ['ionic',
         'oc.lazyLoad',
         'oc.lazyLoad',
@@ -404,7 +414,7 @@ app.value('RefreshCount', {
     count: 0
 });
 
-app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'UserStore', 'Traffic', 'Activity', 'Messages', 'CentralHub', function ($scope, $q, $state, AuthService, UserStore, Traffic, Activity, Messages, CentralHub) {
+app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'UserStore', 'Traffic', 'Activity', 'Messages', 'CentralHub', 'toaster', function ($scope, $q, $state, AuthService, UserStore, Traffic, Activity, Messages, CentralHub, $toaster) {
 
     var mc = this;
 
@@ -437,6 +447,7 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
             });
         }
     };
+
 
     $scope.userInitiate = function (username) {
         var deffered = $q.defer();
@@ -484,14 +495,34 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
     } else {
         mc.loadingDone = true;
     }
-
+    /*
     var displayNotification = function (notify) {
-        $scope.text = notify;
+        
     };
+    */
 
     $scope.$parent.$on("centralHubNotification", function (e, notify) {
+        var title;
+        var text;
+
+        newMesssageTitle_CONSTANT = "New Message";
+       newRequestTitle__CONSTANT = "New Request";
+        newChasingTitle__CONSTANT = "Accepted Request";
+         newChaserTitle__CONSTANT
+
+        switch(notify.type){
+
+            case "0" :
+                title = newChaserTitle__CONSTANT;
+                text = newChasing_CONSTANT;
+                break;
+            case "" :
+        }
+
         $scope.$apply(function () {
-            displayNotification(notify);
+            toaster.pop('success', title, _.replace(text, '{0}', notify.username), "", 'trustedHtml', function (toaster) {
+                console.log("stuff yea whatever");
+            });
         });
     });
 
@@ -508,7 +539,9 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
                 mc.badgeActivityCheck();
                 break;
             case 2:
-                console.log("Message state clicked");
+                if (_.isEqual($scope.badge.Messages, 1)) {
+                    $scope.badge.Messages = 0;
+                }
                 break;
         }
     };
