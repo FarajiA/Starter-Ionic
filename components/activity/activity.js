@@ -3,7 +3,6 @@
     app.controller('ActivityController', ['$scope', '$stateParams', 'Activity', 'UserStore', function ($scope, $stateParams, Activity, UserStore) {
         // reusable authorization
         var vm = this;
-
         vm.ActivityService = Activity;
 
         vm.loadRequestState = $scope.$parent.loadRequestState;
@@ -25,6 +24,7 @@
         
         $scope.$watch('$parent.loadRequestState', function (newVal, oldVal) {
             vm.showRequests = newVal;
+            //$scope.$parent.loadRequestState = false;
         });
 
     }]);

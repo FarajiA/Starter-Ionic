@@ -20,7 +20,7 @@
             
             return deffered.promise;
         };
-
+        /*
         Message.chasing = function (index) {
             var deffered = $q.defer();
             var guid = UserStore.data().GUID;
@@ -42,10 +42,8 @@
 
             return deffered.promise;
         };
-
+        */
         Message.inboxMessages = function () { return inboxMessages; };
-        Message.getChasers = function () { return getChasers; };
-
         return Message;
     }]);
 

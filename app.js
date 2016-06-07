@@ -7,14 +7,15 @@ const refreshTokenLife_CONSTANT = 7;
 const countSet_CONSTANT = 20;
 
 const newMesssageTitle_CONSTANT = "New Message";
-const newRequestTitle__CONSTANT = "New Request";
-const newChasingTitle__CONSTANT = "Accepted Request";
-const newChaserTitle__CONSTANT = "New Chaser";
-const newBroadcasting_CONSTANT = "Broadcasting"
+const newRequestTitle_CONSTANT = "New Request";
+const newChasingTitle_CONSTANT = "Accepted Request";
+const newChaserTitle_CONSTANT = "New Chaser";
+const newBroadcastingTitle_CONSTANT = "New Broadcast"
+const newBroadcasting_CONSTANT = "{0} is broadcasting"
 const newMesssage_CONSTANT = "{0} sent you a message.";
 const newRequest_CONSTANT = "{0} sent you a request.";
 const newChasing_CONSTANT = "{0} accepted your request.";
-const newChaser_CONSTANT = "{0} started chasing you."
+const newChaser_CONSTANT = "{0} started chasing you.";
 
 var app = angular.module('App', ['ionic',
         'oc.lazyLoad',
@@ -504,24 +505,54 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
     $scope.$parent.$on("centralHubNotification", function (e, notify) {
         var title;
         var text;
-
-        newMesssageTitle_CONSTANT = "New Message";
-       newRequestTitle__CONSTANT = "New Request";
-        newChasingTitle__CONSTANT = "Accepted Request";
-         newChaserTitle__CONSTANT
+        var state;
 
         switch(notify.type){
-
-            case "0" :
-                title = newChaserTitle__CONSTANT;
+            case 0 :
+                title = newChaserTitle_CONSTANT;
                 text = newChasing_CONSTANT;
+                state = "main.traffic";
+                if ($state.current.name != state)
+                    $scope.badge.Traffic = 1;
                 break;
-            case "" :
+            case 1:
+                Activity.requests(0);
+                title = newRequestTitle_CONSTANT;
+                text = newRequest_CONSTANT;
+                state = "main.activity";
+                if ($state.current.name != state)
+                    $scope.badge.Activity = 1;
+                $scope.$apply(function () {
+                    $scope.loadRequestState = true;
+                });
+                break;
+            case 2:
+                title = newChasingTitle_CONSTANT;
+                text = newChasing_CONSTANT;
+                state = "main.traffic";
+                if ($state.current.name != state)
+                    $scope.badge.Traffic = 1;
+                $scope.$apply(function () {
+                    $scope.loadChasingState = true;
+                });
+                break;
+            case 3:
+                title = newBroadcastingTitle_CONSTANT;
+                text = newBroadcasting_CONSTANT;
+                state = "main.activity" 
+                break;
+            case 4:
+                title = newMesssageTitle_CONSTANT;
+                text = newMesssage_CONSTANT;
+                state = "main.messages";
+                break;
         }
 
         $scope.$apply(function () {
-            toaster.pop('success', title, _.replace(text, '{0}', notify.username), "", 'trustedHtml', function (toaster) {
+            $toaster.pop('success', notify.username, title /*_.replace(text, '{0}', notify.username)*/, "", 'trustedHtml', function (toaster) {
                 console.log("stuff yea whatever");
+                $state.go(state);
+                return true;
             });
         });
     });
@@ -546,6 +577,11 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
         }
     };
 
-
+    mc.showDangToast = function () {
+        $toaster.pop('success', 'New Thang','Notification stuff goes here', "", 'trustedHtml', function (toaster) {
+            console.log("stuff yea whatever");
+            return true;
+        });
+    };
 
 }]);
