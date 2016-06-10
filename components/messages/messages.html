@@ -1,6 +1,24 @@
 ﻿<ion-view view-title="Messages">
     <ion-content class="padding">
-        <h2>Messages</h2>
-    </ion-content>
+        <ion-refresher spinner="lines" on-refresh="vm.doRefresh()" disable-pulling-rotation="true">
+            <div id="result">
+                <div id="messages" class="">
+                    <div class="zeroResults" ng-show="broadcasting.length === 0">
+                        <h2>no messages</h2>
+                    </div>
+                    <ion-list ng-show="broadcasting.length > 0">
+                        <ion-item class="item-avatar item-icon-right" ng-repeat="broadcast in broadcasting" type="item-text-wrap" ng-click="$parent.transferPage()" href="#/main/activity/{{broadcast.GUID}}">
+                            <img ng-src="{{broadcast.photo && imageURL + broadcast.GUID + '.png' || 'img/default_avatar.png' }}">
+                            <h2>{{broadcast.username}}</h2>
+                            <p>{{broadcast.firstname}}&nbsp;{{broadcast.lastname}}</p>
+                        </ion-item>
+                    </ion-list>
+                    <ion-infinite-scroll ng-if="moBroadcasters" on-infinite="loadMoreBroadcasters()" distance="30%"></ion-infinite-scroll>
+                </div>
+            </div>
+
+
+
+</ion-content>
 </ion-view>
 

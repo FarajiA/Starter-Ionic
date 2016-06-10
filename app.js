@@ -433,7 +433,6 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
 
     mc.badgeTrafficCheck = function () {
         if (_.isEqual($scope.badge.Traffic, 1)) {
-            $scope.loadChasingState = true;
             Traffic.viewed().then(function (response) {
                 $scope.badge.Traffic = 0;
             });
@@ -508,7 +507,8 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
         var state;
 
         switch(notify.type){
-            case 0 :
+            case 0:
+                Traffic.chasers(0);
                 title = newChaserTitle_CONSTANT;
                 text = newChasing_CONSTANT;
                 state = "main.traffic";
@@ -527,6 +527,7 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
                 });
                 break;
             case 2:
+                Traffic.chasing(0);
                 title = newChasingTitle_CONSTANT;
                 text = newChasing_CONSTANT;
                 state = "main.traffic";
@@ -537,11 +538,13 @@ app.controller('mainController', ['$scope', '$q', '$state', 'AuthService', 'User
                 });
                 break;
             case 3:
+                Activity.broadcasting(0);
                 title = newBroadcastingTitle_CONSTANT;
                 text = newBroadcasting_CONSTANT;
                 state = "main.activity" 
                 break;
             case 4:
+                Messages.inbox(0);
                 title = newMesssageTitle_CONSTANT;
                 text = newMesssage_CONSTANT;
                 state = "main.messages";
